@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 1 - Hitung Luas & Keliling</title>
+    <style>
+        :root {
+            --bg-body: linear-gradient(135deg, #eef2f7 0%, #dbeafe 100%);
+            --bg-card: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --input-bg: #ffffff;
+            --input-border: #d1d5db;
+            --input-text: #111827;
+            --box-bg: #f8fafc;
+            --box-border: #e2e8f0;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: rgba(59, 130, 246, 0.15);
+            --shape-border: #3b82f6;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode {
+            --bg-body: linear-gradient(135deg, #090d16 0%, #111827 100%);
+            --bg-card: #1f293d;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --input-bg: #111827;
+            --input-border: #334155;
+            --input-text: #f8fafc;
+            --box-bg: #151d2a;
+            --box-border: #2c384d;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --accent-light: rgba(59, 130, 246, 0.25);
+            --shape-border: #60a5fa;
+            --card-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+        }
+
+        body {
+            background: var(--bg-body);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            width: 100%;
+            max-width: 450px;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .theme-btn {
+            background: var(--box-bg);
+            border: 1px solid var(--box-border);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.08);
+            border-color: var(--accent);
+        }
+
+        /* Container Visualisasi Bentuk */
+        .preview-container {
+            background-color: var(--box-bg);
+            border: 1px solid var(--box-border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .preview-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .preview-area {
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .shape {
+            display: none;
+            background: var(--accent-light);
+            border: 2px dashed var(--shape-border);
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.3s ease, height 0.3s ease;
+            max-width: 240px;
+            max-height: 130px;
+            min-width: 25px;
+            min-height: 25px;
+        }
+
+        .shape-dimension {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            padding: 4px 6px;
+            white-space: nowrap;
+        }
+
+        .preview-placeholder {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-size: 0.92rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            border: 1.5px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-hitung {
+            width: 100%;
+            padding: 11px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            margin-bottom: 20px;
+        }
+
+        .btn-hitung:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-hitung:active {
+            transform: scale(0.99);
+        }
+
+        /* Hasil Box */
+        .result-box {
+            background-color: var(--box-bg);
+            border: 1px solid var(--box-border);
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.98rem;
+            color: var(--text-secondary);
+        }
+
+        .result-item:not(:last-child) {
+            border-bottom: 1px dashed var(--box-border);
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.15rem;
+        }
+
+        .watermark {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Header dengan Tombol Toggle Tema -->
+        <div class="card-header">
+            <h1>Luas & Keliling</h1>
+            <button class="theme-btn" id="themeToggle" onclick="toggleTheme()" title="Ganti Tema">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </div>
+
+        <!-- Visualisasi Bentuk Persegi Panjang -->
+        <div class="preview-container">
+            <div class="preview-title">Visualisasi Bentuk</div>
+            <div class="preview-area">
+                <div id="shape" class="shape">
+                    <span id="shapeDimension" class="shape-dimension"></span>
+                </div>
+                <span id="previewPlaceholder" class="preview-placeholder">Masukkan panjang & lebar untuk melihat bentuk</span>
+            </div>
+        </div>
+
+        <!-- Input Panjang & Lebar -->
+        <div class="form-group">
+            <label for="panjang">Panjang (m):</label>
+            <input type="number" id="panjang" placeholder="Masukkan nilai panjang" min="0" step="any">
+        </div>
+
+        <div class="form-group">
+            <label for="lebar">Lebar (m):</label>
+            <input type="number" id="lebar" placeholder="Masukkan nilai lebar" min="0" step="any">
+        </div>
+
+        <button class="btn-hitung" onclick="hitung()">Hitung</button>
+
+        <!-- Kotak Hasil -->
+        <div class="result-box">
+            <div class="result-item">
+                <span>Luas:</span>
+                <span><span id="luas" class="result-value">0</span> m<sup>2</sup></span>
+            </div>
+            <div class="result-item">
+                <span>Keliling:</span>
+                <span><span id="keliling" class="result-value">0</span> m</span>
+            </div>
+        </div>
+
+        <!-- Watermark -->
+        <div class="watermark">by ammarayyasy</div>
+    </div>
+
+    <script>
+        function hitung() {
+            // Task 1: Ambil nilai panjang dan lebar dari input sebagai number
+            let panjangVal = document.getElementById("panjang").value;
+            let lebarVal = document.getElementById("lebar").value;
+
+            let panjang = parseFloat(panjangVal) || 0;
+            let lebar = parseFloat(lebarVal) || 0;
+
+            // Task 2: Hitung luas (panjang * lebar)
+            let luas = panjang * lebar;
+
+            // Task 3: Hitung keliling (2 * (panjang + lebar))
+            let keliling = 2 * (panjang + lebar);
+
+            // Tampilkan hasil ke elemen HTML
+            document.getElementById("luas").innerText = luas;
+            document.getElementById("keliling").innerText = keliling;
+
+            // Perbarui visualisasi bentuk
+            updateVisualisasi(parseFloat(panjangVal), parseFloat(lebarVal));
+        }
+
+        // Fungsi memperbarui visualisasi bentuk secara proporsional
+        function updateVisualisasi(p, l) {
+            const shape = document.getElementById("shape");
+            const placeholder = document.getElementById("previewPlaceholder");
+            const dimText = document.getElementById("shapeDimension");
+
+            if (p > 0 && l > 0) {
+                shape.style.display = "flex";
+                placeholder.style.display = "none";
+
+                // Batas ukuran maksimal kotak visualisasi (piksel)
+                const maxW = 230;
+                const maxH = 120;
+
+                let scaleW, scaleH;
+                if ((p / l) >= (maxW / maxH)) {
+                    scaleW = maxW;
+                    scaleH = Math.max(25, (l / p) * maxW);
+                } else {
+                    scaleH = maxH;
+                    scaleW = Math.max(25, (p / l) * maxH);
+                }
+
+                shape.style.width = Math.round(scaleW) + "px";
+                shape.style.height = Math.round(scaleH) + "px";
+                dimText.innerText = `${p}m × ${l}m`;
+            } else {
+                shape.style.display = "none";
+                placeholder.style.display = "block";
+            }
+        }
+
+        // Fungsi toggle tema gelap & terang
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            document.getElementById("themeIcon").textContent = isDark ? "☀️" : "🌙";
+            localStorage.setItem("themePreference", isDark ? "dark" : "light");
+        }
+
+        // Muat preferensi tema yang tersimpan
+        if (localStorage.getItem("themePreference") === "dark") {
+            document.body.classList.add("dark-mode");
+            document.getElementById("themeIcon").textContent = "☀️";
+        }
+
+        // Hitung dan perbarui otomatis saat input diketik
+        document.getElementById("panjang").addEventListener("input", hitung);
+        document.getElementById("lebar").addEventListener("input", hitung);
+    </script>
+</body>
+</html>
